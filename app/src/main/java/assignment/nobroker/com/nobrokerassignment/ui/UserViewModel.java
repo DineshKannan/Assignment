@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 
 import assignment.nobroker.com.nobrokerassignment.models.Data;
 import assignment.nobroker.com.nobrokerassignment.repository.NetworkState;
-import assignment.nobroker.com.nobrokerassignment.repository.modelRepository.ItemKeyedUserDataSource;
 import assignment.nobroker.com.nobrokerassignment.repository.modelRepository.NobroakerDataSourceFactory;
+import assignment.nobroker.com.nobrokerassignment.repository.modelRepository.NobroakerPageKeyedPropertiesSource;
 
 /**
  * Created by brijesh on 18/9/17.
@@ -23,7 +23,7 @@ public class UserViewModel extends ViewModel {
     public LiveData<PagedList<Data>> propertiesList;
     public LiveData<NetworkState> networkState;
     Executor executor;
-    LiveData<ItemKeyedUserDataSource> tDataSource;
+    LiveData<NobroakerPageKeyedPropertiesSource> tDataSource;
 
     public UserViewModel() {
         executor = Executors.newFixedThreadPool(5);
@@ -37,8 +37,8 @@ public class UserViewModel extends ViewModel {
 
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder()).setEnablePlaceholders(false)
-                        .setInitialLoadSizeHint(10)
-                        .setPageSize(20).build();
+                        .setInitialLoadSizeHint(21)
+                        .setPageSize(21).build();
 
         propertiesList = (new LivePagedListBuilder(nobroakerDataSourceFactory, pagedListConfig))
                 .setBackgroundThreadExecutor(executor)

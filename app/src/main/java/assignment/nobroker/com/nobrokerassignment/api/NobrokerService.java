@@ -11,5 +11,5 @@ import retrofit2.http.QueryMap;
 
 public interface NobrokerService {
     @GET("api/v1/property/filter/region/ChIJLfyY2E4UrjsRVq4AjI7zgRY/")
-    Call<PropertiesResponse> getProperties(@Query("pageNo") String pageNo);
+    Call<PropertiesResponse> getProperties(@Query("pageNo") int pageNo);
 }

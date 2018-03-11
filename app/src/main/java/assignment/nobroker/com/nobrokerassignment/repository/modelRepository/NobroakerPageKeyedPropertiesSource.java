@@ -2,6 +2,7 @@ package assignment.nobroker.com.nobrokerassignment.repository.modelRepository;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.ItemKeyedDataSource;
+import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -19,20 +20,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by brijesh on 20/9/17.
- */
+public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Integer,Data> {
 
-public class ItemKeyedUserDataSource extends ItemKeyedDataSource<String, Data> {
-    public static final String TAG = ItemKeyedUserDataSource.class.getSimpleName();
+    public static final String TAG = NobroakerPageKeyedPropertiesSource.class.getSimpleName();
     NobrokerService nobrokerService;
-    LoadInitialParams<String> initialParams;
-    LoadParams<String> afterParams;
+    LoadInitialParams<Integer> initialParams;
+    LoadParams<Integer> afterParams;
     private MutableLiveData networkState;
     private MutableLiveData initialLoading;
     private Executor retryExecutor;
 
-    public ItemKeyedUserDataSource(Executor retryExecutor) {
+    public NobroakerPageKeyedPropertiesSource(Executor retryExecutor) {
         nobrokerService = NobrokerApi.createNobroakerService();
         networkState = new MutableLiveData();
         initialLoading = new MutableLiveData();
@@ -49,18 +47,18 @@ public class ItemKeyedUserDataSource extends ItemKeyedDataSource<String, Data> {
     }
 
     @Override
-    public void loadInitial(@NonNull LoadInitialParams<String> params, @NonNull final LoadInitialCallback<Data> callback) {
+    public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Data> callback) {
         Log.i(TAG, "Loading Rang " + 1 + " Count " + params.requestedLoadSize);
         final List<Data> propertiesList = new ArrayList();
         initialParams = params;
         initialLoading.postValue(NetworkState.LOADING);
         networkState.postValue(NetworkState.LOADING);
-        nobrokerService.getProperties("0").enqueue(new Callback<PropertiesResponse>() {
+        nobrokerService.getProperties(0).enqueue(new Callback<PropertiesResponse>() {
             @Override
             public void onResponse(Call<PropertiesResponse> call, Response<PropertiesResponse> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     propertiesList.addAll(response.body().getData());
-                    callback.onResult(propertiesList);
+                    callback.onResult(propertiesList,0,1);
                     Log.e("API CALL RES", propertiesList.toString());
                     initialLoading.postValue(NetworkState.LOADED);
                     networkState.postValue(NetworkState.LOADED);
@@ -82,11 +80,15 @@ public class ItemKeyedUserDataSource extends ItemKeyedDataSource<String, Data> {
                 networkState.postValue(new NetworkState(Status.FAILED, errorMessage));
             }
         });
+    }
+
+    @Override
+    public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Data> callback) {
 
     }
 
     @Override
-    public void loadAfter(@NonNull LoadParams<String> params, @NonNull final LoadCallback<Data> callback) {
+    public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Data> callback) {
         Log.i(TAG, "Loading Rang " + params.key + " Count " + params.requestedLoadSize);
         final List<Data> propertiesList = new ArrayList();
         afterParams = params;
@@ -97,7 +99,7 @@ public class ItemKeyedUserDataSource extends ItemKeyedDataSource<String, Data> {
             public void onResponse(Call<PropertiesResponse> call, Response<PropertiesResponse> response) {
                 if (response.isSuccessful()) {
                     propertiesList.addAll(response.body().getData());
-                    callback.onResult(propertiesList);
+                    callback.onResult(propertiesList,params.key+1);
                     networkState.postValue(NetworkState.LOADED);
                     afterParams = null;
                 } else {
@@ -117,16 +119,5 @@ public class ItemKeyedUserDataSource extends ItemKeyedDataSource<String, Data> {
             }
         });
 
-    }
-
-    @Override
-    public void loadBefore(@NonNull LoadParams<String> params, @NonNull LoadCallback<Data> callback) {
-
-    }
-
-    @NonNull
-    @Override
-    public String getKey(@NonNull Data item) {
-        return item.getId();
     }
 }
