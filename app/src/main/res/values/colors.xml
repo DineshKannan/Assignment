@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FA3957</color>
+    <color name="colorPrimaryDark">#DA3856</color>
+    <color name="colorAccent">#289485</color>
+    <color name="font_color">#9F9F9F</color>
+    <color name="font_color_strong">#7B7B7B</color>
+    <color name="card_background_color">#FFFEFF</color>
+    <color name="app_background_color">#D2D2D2</color>
+    <color name="filter_page_background">#EEEFF1</color>
+</resources>

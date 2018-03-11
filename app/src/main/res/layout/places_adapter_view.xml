@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:background="@color/card_background_color"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.15">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_filter_icon" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.85"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="18dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:id="@+id/title"
+            android:maxLines="1"
+            android:text="Royapruarm"
+            android:gravity="center_vertical"
+            android:textColor="@color/font_color"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:id="@+id/secondaryTitle"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="2dp"
+            android:text="Vasantha Flats, Bajanai Koil Street"
+            android:maxLines="1"
+            android:textColor="@color/font_color"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_background_color" />
+
+    </RelativeLayout>
+</LinearLayout>
