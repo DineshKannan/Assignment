@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import assignment.nobroker.com.nobrokerassignment.ui.PropertiesAdapter;
+import assignment.nobroker.com.nobrokerassignment.ui.PropertyViewModelfactory;
 import assignment.nobroker.com.nobrokerassignment.ui.UserViewModel;
 import assignment.nobroker.com.nobrokerassignment.util.ListItemClickListener;
 
@@ -27,7 +28,8 @@ public class SearchActivityFragment extends Fragment implements ListItemClickLis
 
     private UserViewModel viewModel;
     private String TAG = SearchActivityFragment.class.getSimpleName();
-
+    private HashMap<String,List<String>> options=new HashMap<String, List<String>>();
+    private HashMap<String,String> options_formatted=new HashMap<>();
     public SearchActivityFragment() {
     }
 
@@ -41,7 +43,9 @@ public class SearchActivityFragment extends Fragment implements ListItemClickLis
         ActionBar mActionBar=getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle("NoBroker");
-
+        Bundle bundle=getArguments();
+        options= (HashMap<String, List<String>>) bundle.getSerializable("options");
+        options_formatted=updateFilter(options);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class SearchActivityFragment extends Fragment implements ListItemClickLis
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
-        viewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        viewModel = ViewModelProviders.of(this,new PropertyViewModelfactory(options_formatted)).get(UserViewModel.class);
 
         final PropertiesAdapter userUserAdapter = new PropertiesAdapter(this);
 
@@ -75,16 +79,20 @@ public class SearchActivityFragment extends Fragment implements ListItemClickLis
 
     }
 
-    public void updateFilter(HashMap<String,List<String>> options){
+    public HashMap<String,String> updateFilter(HashMap<String,List<String>> options){
         HashMap<String,String> options_formatted=new HashMap<>();
         for(String key:options.keySet()){
-            String filter_string="";
+            String filter_string=null;
             for(int i=0;i<options.get(key).size();i++){
-                filter_string+=","+options.get(key).get(i);
+                if(filter_string!=null){
+                    filter_string+=","+options.get(key).get(i);
+                }
+                else{
+                    filter_string=options.get(key).get(i);
+                }
             }
             options_formatted.put(key,filter_string);
         }
-        Log.e(TAG,"Filter Serialized in Search Fragment "+options_formatted);
-        viewModel.updateFilter(options_formatted);
+        return options_formatted;
     }
 }

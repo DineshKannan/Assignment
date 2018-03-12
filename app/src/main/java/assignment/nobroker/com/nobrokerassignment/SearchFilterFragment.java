@@ -22,6 +22,8 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,6 +65,9 @@ public class SearchFilterFragment extends Fragment {
         ActionBar mActionBar=getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle("Filter");
+
+        Bundle bundle=getArguments();
+        options= (HashMap<String, List<String>>) bundle.getSerializable("options");
         mGeoDataClient = Places.getGeoDataClient(getActivity(), null);
     }
 
@@ -71,11 +76,51 @@ public class SearchFilterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root_view= inflater.inflate(R.layout.fragment_filter, container, false);
         mAutocompleteView = (AutoCompleteTextView) root_view.findViewById(R.id.autocomplete_places);
+        setFilters((ViewGroup) root_view);
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
-        mAdapter = new PlaceAutocompleteAdapter(getContext(), mGeoDataClient, null, null);
+        LatLng north_east=new LatLng(13.465390871221931, 78.00780566406252);
+        LatLng south_west=new LatLng(12.749336958395071, 77.17558496093739);
+        LatLngBounds bangaloreBounds=new LatLngBounds(south_west,north_east);
+
+        mAdapter = new PlaceAutocompleteAdapter(getContext(), mGeoDataClient, bangaloreBounds, null);
         mAutocompleteView.setAdapter(mAdapter);
         return root_view;
     }
+
+    private void setFilters(ViewGroup root){
+        final int childCount = root.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = root.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                setFilters((ViewGroup) child);
+            }
+
+            final String tagObj = (String) child.getTag();
+            Log.e(SearchFilterFragment.class.getSimpleName(),"Tag in Iteration is "+tagObj);
+            for(String key:options.keySet()){
+                for(int k=0;k<options.get(key).size();k++){
+                    String tmp_tag=key+":"+options.get(key).get(k)+":";
+                    Log.e(SearchFilterFragment.class.getSimpleName(),"Temp Tag in Iteration is "+tmp_tag);
+                    if (tagObj != null && tagObj.contains(tmp_tag)) {
+                        updateTheme((Button) child,true);
+                        child.setTag(tmp_tag+"1");
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateTheme(Button v, boolean is_selected){
+        if(is_selected){
+            v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            v.setTextColor(getResources().getColor(R.color.card_background_color));
+        }
+        else{
+            v.setBackgroundColor(getResources().getColor(R.color.button_background_color));
+            v.setTextColor(getResources().getColor(android.R.color.black));
+        }
+    }
+
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {

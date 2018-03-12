@@ -21,7 +21,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
     private FragmentManager fragmentManager;
     private HashMap<String,List<String>> options=new HashMap<>();
     private static final String TAG=SearchActivity.class.getSimpleName();
-    private SearchActivityFragment searchActivityFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +44,23 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
 
     private void instantiateSearchFragment() {
         FragmentTransaction mFragmentTransaction = fragmentManager.beginTransaction();
-        searchActivityFragment=new SearchActivityFragment();
+        SearchActivityFragment searchActivityFragment=new SearchActivityFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("options",options);
+        searchActivityFragment.setArguments(bundle);
         mFragmentTransaction.add(R.id.fragment_placeholder,searchActivityFragment);
-        mFragmentTransaction.addToBackStack("Search");
         mFragmentTransaction.commit();
     }
 
     private void instantiateFilterFragment() {
         FragmentTransaction mFragmentTransaction = fragmentManager.beginTransaction();
         mFragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-        mFragmentTransaction.add(R.id.fragment_placeholder,new SearchFilterFragment(),"FilterFragment");
+        SearchFilterFragment searchFilterFragment=new SearchFilterFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("options",options);
+        searchFilterFragment.setArguments(bundle);
+        mFragmentTransaction.replace(R.id.fragment_placeholder,searchFilterFragment,"FilterFragment");
+        mFragmentTransaction.addToBackStack("Search");
         mFragmentTransaction.commit();
     }
 
@@ -120,9 +126,17 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
     }
 
     public void applyFilter(View v){
-        getSupportFragmentManager()
-                .beginTransaction().
-                remove(getSupportFragmentManager().findFragmentByTag("FilterFragment")).commit();
-        searchActivityFragment.updateFilter(options);
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
+
+        FragmentTransaction mFragmentTransaction = fragmentManager.beginTransaction();
+        SearchActivityFragment searchActivityFragment=new SearchActivityFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("options",options);
+        searchActivityFragment.setArguments(bundle);
+        mFragmentTransaction.replace(R.id.fragment_placeholder,searchActivityFragment);
+        mFragmentTransaction.commit();
+
     }
 }

@@ -7,6 +7,7 @@ import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -26,10 +27,13 @@ public class UserViewModel extends ViewModel {
     Executor executor;
     LiveData<NobroakerPageKeyedPropertiesSource> tDataSource;
     NobroakerDataSourceFactory nobroakerDataSourceFactory;
+    HashMap<String,String> options;
 
-    public UserViewModel() {
+    public UserViewModel(HashMap<String,String> options) {
+        this.options=options;
+
         executor = Executors.newFixedThreadPool(5);
-        nobroakerDataSourceFactory = new NobroakerDataSourceFactory(executor);
+        nobroakerDataSourceFactory = new NobroakerDataSourceFactory(executor,options);
 
         tDataSource = nobroakerDataSourceFactory.getMutableLiveData();
 
@@ -39,7 +43,7 @@ public class UserViewModel extends ViewModel {
 
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder()).setEnablePlaceholders(false)
-                        .setInitialLoadSizeHint(21)
+                        .setPrefetchDistance(10)
                         .setPageSize(21).build();
 
         propertiesList = (new LivePagedListBuilder(nobroakerDataSourceFactory, pagedListConfig))
@@ -47,7 +51,4 @@ public class UserViewModel extends ViewModel {
                 .build();
     }
 
-    public void updateFilter(HashMap<String,String> options_formatted){
-        nobroakerDataSourceFactory.updateFilter(options_formatted);
-    }
 }

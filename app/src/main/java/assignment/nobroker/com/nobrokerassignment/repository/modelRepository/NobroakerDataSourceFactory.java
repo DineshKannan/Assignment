@@ -11,8 +11,10 @@ public class NobroakerDataSourceFactory implements DataSource.Factory {
     MutableLiveData<NobroakerPageKeyedPropertiesSource> mutableLiveData;
     NobroakerPageKeyedPropertiesSource itemKeyedUserDataSource;
     Executor executor;
+    HashMap<String,String> options_formatted;
 
-    public NobroakerDataSourceFactory(Executor executor) {
+    public NobroakerDataSourceFactory(Executor executor,HashMap<String,String> options_formatted) {
+        this.options_formatted=options_formatted;
         this.mutableLiveData = new MutableLiveData<NobroakerPageKeyedPropertiesSource>();
         this.executor = executor;
     }
@@ -20,18 +22,13 @@ public class NobroakerDataSourceFactory implements DataSource.Factory {
 
     @Override
     public DataSource create() {
-        itemKeyedUserDataSource = new NobroakerPageKeyedPropertiesSource(executor);
+        itemKeyedUserDataSource = new NobroakerPageKeyedPropertiesSource(executor,options_formatted);
         mutableLiveData.postValue(itemKeyedUserDataSource);
         return itemKeyedUserDataSource;
     }
 
     public MutableLiveData<NobroakerPageKeyedPropertiesSource> getMutableLiveData() {
         return mutableLiveData;
-    }
-
-    public void updateFilter(HashMap<String,String> options_formatted){
-        itemKeyedUserDataSource.updateFilter(options_formatted);
-        mutableLiveData.postValue(itemKeyedUserDataSource);
     }
 
 }

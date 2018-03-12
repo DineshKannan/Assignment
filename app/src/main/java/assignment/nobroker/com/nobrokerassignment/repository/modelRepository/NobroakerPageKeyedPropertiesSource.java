@@ -30,20 +30,17 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
     private MutableLiveData networkState;
     private MutableLiveData initialLoading;
     private Executor retryExecutor;
-    private String filter;
+    private int total_items=0;
     HashMap<String,String> options_formatted=new HashMap<>();
 
-    public NobroakerPageKeyedPropertiesSource(Executor retryExecutor) {
+
+    public NobroakerPageKeyedPropertiesSource(Executor retryExecutor,HashMap<String,String> options_formatted) {
         nobrokerService = NobrokerApi.createNobroakerService();
         networkState = new MutableLiveData();
         initialLoading = new MutableLiveData();
         this.retryExecutor = retryExecutor;
-        options_formatted.put("pageNo","0");
-    }
-
-    public void updateFilter(HashMap<String,String> options_formatted){
         this.options_formatted=options_formatted;
-        options_formatted.put("pageNo","0");
+        this.options_formatted.put("pageNo","0");
     }
 
     public MutableLiveData getNetworkState() {
@@ -69,11 +66,13 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
         initialParams = params;
         initialLoading.postValue(NetworkState.LOADING);
         networkState.postValue(NetworkState.LOADING);
+        this.options_formatted.put("pageNo",String.valueOf(0));
         nobrokerService.getProperties(options_formatted).enqueue(new Callback<PropertiesResponse>() {
             @Override
             public void onResponse(Call<PropertiesResponse> call, Response<PropertiesResponse> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     assignImageUrl(response);
+                    total_items=response.body().getOtherParams().getTotalCount();
                     propertiesList.addAll(response.body().getData());
                     callback.onResult(propertiesList,0,1);
                     Log.e("API CALL RES", propertiesList.toString());
@@ -109,8 +108,12 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
         Log.i(TAG, "Loading Rang " + params.key + " Count " + params.requestedLoadSize);
         final List<Data> propertiesList = new ArrayList();
         afterParams = params;
+        if(params.key*21>=total_items){
+            return;
+        }
 
         networkState.postValue(NetworkState.LOADING);
+        this.options_formatted.put("pageNo",String.valueOf(params.key));
         nobrokerService.getProperties(options_formatted).enqueue(new Callback<PropertiesResponse>() {
             @Override
             public void onResponse(Call<PropertiesResponse> call, Response<PropertiesResponse> response) {

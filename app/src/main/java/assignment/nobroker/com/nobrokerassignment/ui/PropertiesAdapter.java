@@ -118,67 +118,6 @@ public class PropertiesAdapter extends PagedListAdapter<Data, RecyclerView.ViewH
             binding.executePendingBindings();
         }
 
-       /* public UserItemViewHolder(View itemView) {
-            super(itemView);
-            property_card_view = (CardView)itemView.findViewById(R.id.property_card_view);
-            property_detail_top_container = (LinearLayout) itemView.findViewById(R.id.property_detail_top_container);
-            propertyTitle = (TextView)itemView.findViewById(R.id.propertyTitle);
-            secondaryTitle = (TextView)itemView.findViewById(R.id.secondaryTitle);
-            rent = (TextView)itemView.findViewById(R.id.rent);
-            furnishing = (TextView)itemView.findViewById(R.id.furnishing);
-            propertySize = (TextView)itemView.findViewById(R.id.propertySize);
-            built_up_area = (TextView)itemView.findViewById(R.id.built_up_area);
-            image_container = (ImageView)itemView.findViewById(R.id.image_container);
-            fav_button = (ImageView)itemView.findViewById(R.id.fav_button);
-            call_button = (ImageView)itemView.findViewById(R.id.call_button);
-        }
-
-        public void bindTo(Data data) {
-            if (data.getPropertyTitle() != null) {
-                propertyTitle.setVisibility(View.VISIBLE);
-                propertyTitle.setText(data.getPropertyTitle());
-            } else {
-                propertyTitle.setVisibility(View.GONE);
-            }
-
-
-            if (data.getSecondaryTitle() != null) {
-                secondaryTitle.setVisibility(View.VISIBLE);
-                secondaryTitle.setText(data.getSecondaryTitle());
-            } else {
-                secondaryTitle.setVisibility(View.GONE);
-            }
-
-            if (data.getRent() != 0) {
-                rent.setVisibility(View.VISIBLE);
-                rent.setText(String.valueOf(data.getRent()));
-            } else {
-                rent.setVisibility(View.GONE);
-            }
-
-            if (data.getFurnishing() != null) {
-                furnishing.setVisibility(View.VISIBLE);
-                furnishing.setText(data.getFurnishing());
-            } else {
-                furnishing.setVisibility(View.GONE);
-            }
-
-            if (data.getPropertySize() != 0) {
-                propertySize.setVisibility(View.VISIBLE);
-                propertySize.setText(String.valueOf(data.getPropertySize()));
-            } else {
-                propertySize.setVisibility(View.GONE);
-            }
-
-            if(data.getPhotos().size()>0){
-                Picasso.with(image_container.getContext()).load(get_image_url(data.getPhotos().get(0).getImagesMap().getMedium())).fit().centerCrop().into(image_container);
-            }
-            else{
-                Picasso.with(image_container.getContext()).load("https://images.nobroker.in/static/img/nopic_1bhk.jpg").fit().centerCrop().into(image_container);
-            }
-
-        }*/
-
         public static String get_image_url(String image_url){
             if(image_url!=null && image_url.contains("_")){
                 String folder_directory=image_url.substring(0,image_url.indexOf("_"));

@@ -39,7 +39,7 @@ public class Data extends BaseObservable implements Serializable
 
         Data user = (Data) obj;
 
-        return user.getId() == this.getId();
+        return user.getId().equals(this.getId());
     }
 
     private int propertyAge;
@@ -204,7 +204,6 @@ public class Data extends BaseObservable implements Serializable
 
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
-        Log.e(Data.class.getSimpleName(),"image url is : "+imageUrl);
         if(imageUrl!=null)
             Picasso.with(view.getContext())
                     .load(get_image_url(imageUrl))
@@ -219,7 +218,6 @@ public class Data extends BaseObservable implements Serializable
         if(image_url!=null && image_url.contains("_")){
             String folder_directory=image_url.substring(0,image_url.indexOf("_"));
             String final_url="http://d3snwcirvb4r88.cloudfront.net/images/"+folder_directory+"/"+image_url;
-            Log.e(PropertiesAdapter.class.getSimpleName(),"Resolved url is "+final_url);
             return final_url;
         }
         else{
