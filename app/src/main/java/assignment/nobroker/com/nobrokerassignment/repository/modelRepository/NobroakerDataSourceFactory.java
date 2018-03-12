@@ -3,6 +3,7 @@ package assignment.nobroker.com.nobrokerassignment.repository.modelRepository;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 
+import java.util.HashMap;
 import java.util.concurrent.Executor;
 
 public class NobroakerDataSourceFactory implements DataSource.Factory {
@@ -26,6 +27,11 @@ public class NobroakerDataSourceFactory implements DataSource.Factory {
 
     public MutableLiveData<NobroakerPageKeyedPropertiesSource> getMutableLiveData() {
         return mutableLiveData;
+    }
+
+    public void updateFilter(HashMap<String,String> options_formatted){
+        itemKeyedUserDataSource.updateFilter(options_formatted);
+        mutableLiveData.postValue(itemKeyedUserDataSource);
     }
 
 }

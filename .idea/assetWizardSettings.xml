@@ -16,13 +16,28 @@
                             <entry key="actionbar">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="clipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="jar:file:/private/var/folders/_v/24pt_8bs54q756syccj6t6g80000gp/T/AppTranslocation/CE264359-FB3B-4AAB-BF78-7BBE501329A1/d/Android%20Studio%203.2%20Preview.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/filter_icon.png" />
-                                      <entry key="outputName" value="ic_filter_icon" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/map_place_holder.png" />
+                                      <entry key="outputName" value="ic_location_icon" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ffffff" />
+                                      <entry key="themeColor" value="d32926" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -31,11 +46,26 @@
                             <entry key="notification">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="clipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="jar:file:/private/var/folders/_v/24pt_8bs54q756syccj6t6g80000gp/T/AppTranslocation/CE264359-FB3B-4AAB-BF78-7BBE501329A1/d/Android%20Studio%203.2%20Preview.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_favorite_border_black_24dp.xml" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/filter_icon.png" />
-                                      <entry key="outputName" value="ic_filter_icon" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/call_icon_primary_samll.png" />
+                                      <entry key="outputName" value="ic_call_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -45,7 +75,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="NOTIFICATION" />
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

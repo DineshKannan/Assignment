@@ -1,8 +1,10 @@
 package assignment.nobroker.com.nobrokerassignment.models;
 
+import android.databinding.BaseObservable;
+
 import java.io.Serializable;
 
-public class Score implements Serializable
+public class Score extends BaseObservable implements Serializable
 {
     private long lastUpdatedDate;
 

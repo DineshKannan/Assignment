@@ -1,11 +1,15 @@
 package assignment.nobroker.com.nobrokerassignment.models;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import java.io.Serializable;
 
-public class Photo implements Serializable
+public class Photo extends BaseObservable implements Serializable
 {
     private ImagesMap imagesMap;
 
+    @Bindable
     public ImagesMap getImagesMap() { return this.imagesMap; }
 
     public void setImagesMap(ImagesMap imagesMap) { this.imagesMap = imagesMap; }

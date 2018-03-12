@@ -1,9 +1,11 @@
 package assignment.nobroker.com.nobrokerassignment.models;
 
+import android.databinding.BaseObservable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PropertiesResponse implements Serializable{
+public class PropertiesResponse extends BaseObservable implements Serializable{
     private int status;
 
     public int getStatus() { return this.status; }

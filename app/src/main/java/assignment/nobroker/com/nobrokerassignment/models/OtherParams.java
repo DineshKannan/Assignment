@@ -1,8 +1,10 @@
 package assignment.nobroker.com.nobrokerassignment.models;
 
+import android.databinding.BaseObservable;
+
 import java.io.Serializable;
 
-public class OtherParams implements Serializable
+public class OtherParams extends BaseObservable implements Serializable
 {
     private String city;
 

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -29,14 +30,21 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
     private MutableLiveData networkState;
     private MutableLiveData initialLoading;
     private Executor retryExecutor;
+    private String filter;
+    HashMap<String,String> options_formatted=new HashMap<>();
 
     public NobroakerPageKeyedPropertiesSource(Executor retryExecutor) {
         nobrokerService = NobrokerApi.createNobroakerService();
         networkState = new MutableLiveData();
         initialLoading = new MutableLiveData();
         this.retryExecutor = retryExecutor;
+        options_formatted.put("pageNo","0");
     }
 
+    public void updateFilter(HashMap<String,String> options_formatted){
+        this.options_formatted=options_formatted;
+        options_formatted.put("pageNo","0");
+    }
 
     public MutableLiveData getNetworkState() {
         return networkState;
@@ -46,6 +54,14 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
         return initialLoading;
     }
 
+    public void assignImageUrl(Response<PropertiesResponse> response){
+        for(int i=0;i<response.body().getData().size();i++){
+            if(response.body().getData().get(i).getPhotos().size()>0)
+                response.body().getData().get(i).setImageUrl(response.body().getData().get(i).getPhotos().get(0).getImagesMap().getMedium());
+        }
+
+    }
+
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Data> callback) {
         Log.i(TAG, "Loading Rang " + 1 + " Count " + params.requestedLoadSize);
@@ -53,10 +69,11 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
         initialParams = params;
         initialLoading.postValue(NetworkState.LOADING);
         networkState.postValue(NetworkState.LOADING);
-        nobrokerService.getProperties(0).enqueue(new Callback<PropertiesResponse>() {
+        nobrokerService.getProperties(options_formatted).enqueue(new Callback<PropertiesResponse>() {
             @Override
             public void onResponse(Call<PropertiesResponse> call, Response<PropertiesResponse> response) {
                 if (response.isSuccessful() && response.code() == 200) {
+                    assignImageUrl(response);
                     propertiesList.addAll(response.body().getData());
                     callback.onResult(propertiesList,0,1);
                     Log.e("API CALL RES", propertiesList.toString());
@@ -94,10 +111,11 @@ public class NobroakerPageKeyedPropertiesSource extends PageKeyedDataSource<Inte
         afterParams = params;
 
         networkState.postValue(NetworkState.LOADING);
-        nobrokerService.getProperties(params.key).enqueue(new Callback<PropertiesResponse>() {
+        nobrokerService.getProperties(options_formatted).enqueue(new Callback<PropertiesResponse>() {
             @Override
             public void onResponse(Call<PropertiesResponse> call, Response<PropertiesResponse> response) {
                 if (response.isSuccessful()) {
+                    assignImageUrl(response);
                     propertiesList.addAll(response.body().getData());
                     callback.onResult(propertiesList,params.key+1);
                     networkState.postValue(NetworkState.LOADED);

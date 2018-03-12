@@ -6,6 +6,8 @@
     <color name="font_color">#9F9F9F</color>
     <color name="font_color_strong">#7B7B7B</color>
     <color name="card_background_color">#FFFEFF</color>
-    <color name="app_background_color">#D2D2D2</color>
+    <color name="app_background_color">#D3D3D3</color>
+    <color name="button_background_color">#F8F8F8</color>
+    <color name="app_divider_color">#efecec</color>
     <color name="filter_page_background">#EEEFF1</color>
 </resources>

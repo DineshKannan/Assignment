@@ -4,10 +4,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.arch.persistence.room.Entity;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
 import android.support.v7.recyclerview.extensions.DiffCallback;
+import android.util.Log;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import assignment.nobroker.com.nobrokerassignment.BR;
+import assignment.nobroker.com.nobrokerassignment.R;
+import assignment.nobroker.com.nobrokerassignment.ui.PropertiesAdapter;
 
 @Entity
-public class Data implements Serializable
+public class Data extends BaseObservable implements Serializable
 {
     public static DiffCallback<Data> DIFF_CALLBACK = new DiffCallback<Data>() {
         @Override
@@ -99,9 +110,12 @@ public class Data implements Serializable
 
     private int rent;
 
+    @Bindable
     public int getRent() { return this.rent; }
 
-    public void setRent(int rent) { this.rent = rent; }
+    public void setRent(int rent) {
+        this.rent = rent;
+    }
 
     private long availableFrom;
 
@@ -171,9 +185,47 @@ public class Data implements Serializable
 
     private String propertyTitle;
 
+    @Bindable
     public String getPropertyTitle() { return this.propertyTitle; }
 
     public void setPropertyTitle(String propertyTitle) { this.propertyTitle = propertyTitle; }
+
+    private String imageUrl;
+
+    public void setImageUrl(String imageUrl){
+        this.imageUrl=imageUrl;
+    }
+
+    @Bindable
+    public String getImageUrl() {
+        Log.e(Data.class.getSimpleName(),"Inside class image url is : "+imageUrl);
+        return this.imageUrl;
+    }
+
+    @BindingAdapter({"bind:imageUrl"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        Log.e(Data.class.getSimpleName(),"image url is : "+imageUrl);
+        if(imageUrl!=null)
+            Picasso.with(view.getContext())
+                    .load(get_image_url(imageUrl))
+                    .fit().centerCrop().into(view);
+        else
+            Picasso.with(view.getContext())
+                    .load("https://images.nobroker.in/static/img/nopic_1bhk.jpg")
+                    .fit().centerCrop().into(view);
+    }
+
+    public static String get_image_url(String image_url){
+        if(image_url!=null && image_url.contains("_")){
+            String folder_directory=image_url.substring(0,image_url.indexOf("_"));
+            String final_url="http://d3snwcirvb4r88.cloudfront.net/images/"+folder_directory+"/"+image_url;
+            Log.e(PropertiesAdapter.class.getSimpleName(),"Resolved url is "+final_url);
+            return final_url;
+        }
+        else{
+            return null;
+        }
+    }
 
     private double longitude;
 
@@ -291,6 +343,7 @@ public class Data implements Serializable
 
     private String furnishing;
 
+    @Bindable
     public String getFurnishing() { return this.furnishing; }
 
     public void setFurnishing(String furnishing) { this.furnishing = furnishing; }
@@ -357,6 +410,7 @@ public class Data implements Serializable
 
     private String leaseType;
 
+    @Bindable
     public String getLeaseType() { return this.leaseType; }
 
     public void setLeaseType(String leaseType) { this.leaseType = leaseType; }
@@ -387,12 +441,14 @@ public class Data implements Serializable
 
     private String propertyType;
 
+    @Bindable
     public String getPropertyType() { return this.propertyType; }
 
     public void setPropertyType(String propertyType) { this.propertyType = propertyType; }
 
     private String secondaryTitle;
 
+    @Bindable
     public String getSecondaryTitle() { return this.secondaryTitle; }
 
     public void setSecondaryTitle(String secondaryTitle) { this.secondaryTitle = secondaryTitle; }

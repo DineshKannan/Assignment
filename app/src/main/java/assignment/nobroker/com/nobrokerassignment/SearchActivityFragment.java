@@ -1,7 +1,6 @@
 package assignment.nobroker.com.nobrokerassignment;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import assignment.nobroker.com.nobrokerassignment.models.Data;
+import java.util.HashMap;
+import java.util.List;
+
 import assignment.nobroker.com.nobrokerassignment.ui.PropertiesAdapter;
 import assignment.nobroker.com.nobrokerassignment.ui.UserViewModel;
 import assignment.nobroker.com.nobrokerassignment.util.ListItemClickListener;
@@ -25,7 +26,7 @@ import assignment.nobroker.com.nobrokerassignment.util.ListItemClickListener;
 public class SearchActivityFragment extends Fragment implements ListItemClickListener {
 
     private UserViewModel viewModel;
-    private String TAG = "MainActivity";
+    private String TAG = SearchActivityFragment.class.getSimpleName();
 
     public SearchActivityFragment() {
     }
@@ -72,5 +73,18 @@ public class SearchActivityFragment extends Fragment implements ListItemClickLis
     @Override
     public void onRetryClick(View view, int position) {
 
+    }
+
+    public void updateFilter(HashMap<String,List<String>> options){
+        HashMap<String,String> options_formatted=new HashMap<>();
+        for(String key:options.keySet()){
+            String filter_string="";
+            for(int i=0;i<options.get(key).size();i++){
+                filter_string+=","+options.get(key).get(i);
+            }
+            options_formatted.put(key,filter_string);
+        }
+        Log.e(TAG,"Filter Serialized in Search Fragment "+options_formatted);
+        viewModel.updateFilter(options_formatted);
     }
 }

@@ -1,8 +1,10 @@
 package assignment.nobroker.com.nobrokerassignment.models;
 
+import android.databinding.BaseObservable;
+
 import java.io.Serializable;
 
-public class AmenitiesMap implements Serializable
+public class AmenitiesMap extends BaseObservable implements Serializable
 {
     private boolean INTERCOM;
 

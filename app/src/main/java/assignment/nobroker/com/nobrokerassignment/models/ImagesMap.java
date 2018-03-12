@@ -1,8 +1,18 @@
 package assignment.nobroker.com.nobrokerassignment.models;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
 import java.io.Serializable;
 
-public class ImagesMap implements Serializable
+import assignment.nobroker.com.nobrokerassignment.R;
+
+public class ImagesMap extends BaseObservable implements Serializable
 {
     private String thumbnail;
 
@@ -24,6 +34,7 @@ public class ImagesMap implements Serializable
 
     private String medium;
 
+    @Bindable
     public String getMedium() { return this.medium; }
 
     public void setMedium(String medium) { this.medium = medium; }
