@@ -131,7 +131,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{Integer.toString(property.rent)}"
+                        android:text="@{`\u20B9 `+Integer.toString(property.rent)}"
                         android:textSize="18sp"
                         android:id="@+id/rent"
                         android:textStyle="bold"
@@ -156,17 +156,19 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{property.furnishing}"
+                        android:text="@{property.furnishingDesc+` Furnished`}"
                         android:textSize="14sp"
                         android:id="@+id/furnishing"
                         android:textAlignment="center"
                         android:fontFamily="@font/calibril"
+                        android:textAllCaps="false"
                         android:textColor="@color/font_color_strong"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{property.leaseType}"
+                        android:textAllCaps="false"
                         android:textSize="14sp"
                         android:id="@+id/leaseType"
                         android:textAlignment="center"
@@ -191,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:id="@+id/propertySize"
-                        android:text="@{Integer.toString(property.propertySize)}"
+                        android:text="@{Integer.toString(property.propertySize) +` Sq.ft`}"
                         android:textAlignment="center"
                         android:fontFamily="@font/calibril"
                         android:textStyle="bold"

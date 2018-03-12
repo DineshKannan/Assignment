@@ -2,6 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="assignment.nobroker.com.nobrokerassignment.SearchActivity">
+
+    <item
+        android:id="@+id/action_reset"
+        android:icon="@drawable/ic_reset_icon"
+        android:title="@string/reset_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_clear"
+        android:icon="@drawable/ic_cancel_icon"
+        android:title="@string/cancel_title"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -24,6 +24,7 @@ public class UserViewModel extends ViewModel {
 
     public LiveData<PagedList<Data>> propertiesList;
     public LiveData<NetworkState> networkState;
+    public LiveData<NetworkState> initialState;
     Executor executor;
     LiveData<NobroakerPageKeyedPropertiesSource> tDataSource;
     NobroakerDataSourceFactory nobroakerDataSourceFactory;
@@ -39,6 +40,10 @@ public class UserViewModel extends ViewModel {
 
         networkState = Transformations.switchMap(nobroakerDataSourceFactory.getMutableLiveData(), dataSource -> {
             return dataSource.getNetworkState();
+        });
+
+        initialState= Transformations.switchMap(nobroakerDataSourceFactory.getMutableLiveData(), dataSource -> {
+            return dataSource.getInitialLoading();
         });
 
         PagedList.Config pagedListConfig =

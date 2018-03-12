@@ -4,9 +4,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +25,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
     private FragmentManager fragmentManager;
     private HashMap<String,List<String>> options=new HashMap<>();
     private static final String TAG=SearchActivity.class.getSimpleName();
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +34,12 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("NoBroker");
+
         fragmentManager = getSupportFragmentManager();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,12 +70,15 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
         mFragmentTransaction.replace(R.id.fragment_placeholder,searchFilterFragment,"FilterFragment");
         mFragmentTransaction.addToBackStack("Search");
         mFragmentTransaction.commit();
+        displayFilterActions();
     }
 
     @Override
     public void onBackPressed() {
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
+            fab.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle("NoBroker");
         }
         else{
             super.onBackPressed();
@@ -118,12 +129,53 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
         Log.e(TAG,"Serialized Filter Mapping is : "+options.toString());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                back();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void notify_filter_data(String key, String value) {
         options.put(key,new ArrayList<>());
         options.get(key).add(value);
     }
+
+    @Override
+    public void back(){
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
+        displaySearchActions();
+    }
+
+    public void displaySearchActions(){
+        fab.setVisibility(View.VISIBLE);
+        getSupportActionBar().setTitle("NoBroker");
+    }
+
+    public void displayFilterActions(){
+        fab.setVisibility(View.GONE);
+        getSupportActionBar().setTitle("Filter By");
+    }
+
+    @Override
+    public void reset_filters(){
+        options.clear();
+        options=new HashMap<>();
+    }
+
 
     public void applyFilter(View v){
         if (fragmentManager.getBackStackEntryCount() > 0) {
@@ -137,6 +189,8 @@ public class SearchActivity extends AppCompatActivity implements FilterDataCallb
         searchActivityFragment.setArguments(bundle);
         mFragmentTransaction.replace(R.id.fragment_placeholder,searchActivityFragment);
         mFragmentTransaction.commit();
-
+        displaySearchActions();
     }
+
+
 }

@@ -142,7 +142,6 @@ public class PropertiesAdapter extends PagedListAdapter<Data, RecyclerView.ViewH
 
         }
 
-
         public void bindView(NetworkState networkState) {
             if (networkState != null && networkState.getStatus() == Status.RUNNING) {
                 progressBar.setVisibility(View.VISIBLE);

@@ -245,15 +245,40 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Rent Range 0 to 5,00,000"
-        android:fontFamily="@font/calibri_3"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rent Range:"
+            android:fontFamily="@font/calibri_3"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/min_range"
+            android:fontFamily="@font/calibri_3"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/max_range"
+            android:fontFamily="@font/calibri_3"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
 
     <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
         android:id="@+id/price_range_seekbar"
@@ -261,6 +286,10 @@
         app:left_thumb_color="@color/colorAccent"
         app:right_thumb_color="@color/colorAccent"
         android:layout_width="match_parent"
+        app:min_value="0"
+        app:max_value="500000"
+        app:corner_radius="5"
+        app:bar_color="@color/colorAccent"
         android:layout_height="wrap_content"/>
 
     <TextView
